@@ -4,7 +4,7 @@ class A {
     int x;
 public:
     A() { x = 100; }
-    friend class B;  // B is friend class
+    friend class B; 
 };
 class B {
 public:
