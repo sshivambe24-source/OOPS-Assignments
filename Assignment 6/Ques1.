@@ -1,0 +1,85 @@
+#include <iostream>
+using namespace std;
+
+class Book {
+public:
+    string title;
+    string author;
+    string ISBN;
+};
+class Library {
+private:
+    Book books[100];
+    int count;
+public:
+    Library() {
+        count = 0;
+    }
+    bool addNewBook(string &title, string &author, string &ISBN) {
+        if (count >= 100){
+            return false;
+        }
+        books[count].title = title;
+        books[count].author = author;
+        books[count].ISBN = ISBN;
+        count++;
+        return true;
+    }
+    bool removeBooks(string &ISBN);
+    void displayDetails() {
+        if (count == 0) {
+            cout << "No books available.\n";
+            return;
+        }
+        for (int i = 0; i < count; i++) {
+            cout << "Book " << i + 1 << ":\n";
+            cout << "Title: " << books[i].title << endl;
+            cout << "Author: " << books[i].author << endl;
+            cout << "ISBN: " << books[i].ISBN << endl;
+            cout << "----------------------\n";
+        }
+    }
+};
+bool Library::removeBooks(string &ISBN) {
+    for (int i = 0; i < count; i++) {
+        if (books[i].ISBN == ISBN) {
+            // shift elements left
+            for (int j = i; j < count - 1; j++) {
+                books[j] = books[j + 1];
+            }
+            count--;
+            return true;
+        }
+    }
+    return false;
+}
+int main() {
+    Library lib;
+    string title, author, ISBN;
+    for (int i = 0; i < 2; i++) {
+        cout << "Enter title: ";
+        cin >> title;
+        cout << "Enter author: ";
+        cin >> author;
+        cout << "Enter ISBN: ";
+        cin >> ISBN;
+        if (lib.addNewBook(title, author, ISBN)) {
+            cout << "Book added successfully!\n";
+        } else {
+            cout << "Failed to add book.\n";
+        }
+    }
+    cout << "\nLibrary Details:\n";
+    lib.displayDetails();
+    cout << "\nEnter ISBN to remove: ";
+    cin >> ISBN;
+    if (lib.removeBooks(ISBN)) {
+        cout << "Book removed successfully!\n";
+    } else {
+        cout << "Book not found!\n";
+    }
+    cout << "\nUpdated Library:\n";
+    lib.displayDetails();
+
+    return 0;
+}
